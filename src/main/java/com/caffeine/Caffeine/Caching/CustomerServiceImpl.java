@@ -42,11 +42,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Cacheable
     public List<CustomerDto> getCustomers(){
-        LOG.info("About to");
-        String sql = "SELECT * FROM Customers";
-        LOG.info("Starting");
-        List<Customers> customers = (List<Customers>) cache.cache().get("Customers", k -> jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(Customers.class)));
-        LOG.info("Started");
+        List<Customers> customers = (List<Customers>) cache.cache().get("Customers", k -> customerRepository.findAll());
         List<CustomerDto> customerDtos = new ArrayList<>();
         assert customers != null;
         for (Customers customers1 : customers){
@@ -58,10 +54,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Cacheable
     public List<Customers> search(String searchAlphabet){
-        String sql = "SELECT ShortName,Name,EMailAddress,PhoneRef,DateofBirth,Sex,customer_id FROM Customers";
-
-        List<Customers> customers = (List<Customers>) cache.cache().get("Customers", k -> jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(Customers.class)));
-        LOG.info("Started");
+        List<Customers> customers = (List<Customers>) cache.cache().get("Customers", k -> customerRepository.findAll());
         List<Customers> matchedNames = new ArrayList<>();
         assert customers != null;
         for (Customers customer : customers) {
