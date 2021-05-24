@@ -1,4 +1,4 @@
-package com.caffeine.Caffeine.Caching;
+package com.caffeine.Caffeine.Caching.configurations;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import org.springframework.cache.CacheManager;
@@ -15,8 +15,6 @@ public class CaffeineCacheConfig {
     @Bean
     public Caffeine<Object, Object> caffeineConfig() {
 
-        //refresh entries after a defined period automatically
-
         return Caffeine.newBuilder()
                .maximumSize(500)
                .initialCapacity(100)
@@ -27,7 +25,7 @@ public class CaffeineCacheConfig {
 
     @Bean
     public CacheManager cacheManager() {
-        CaffeineCacheManager cacheManager = new CaffeineCacheManager("customers");
+        CaffeineCacheManager cacheManager = new CaffeineCacheManager("customers", "kycdetails", "signatory", "directors", "highRiskFlags");
         cacheManager.setCaffeine(caffeineConfig());
         return cacheManager;
     }
